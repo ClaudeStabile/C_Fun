@@ -8,13 +8,13 @@ Le C C'est Fun ! Quelques bidouilles C pour ceux que ça intéresse, Contributor
 # www8080 
 
 C'est un micro serveur www qui sert la page index.html du repertoire sur le port 8080, on peut passer un autre port en argument
-Pour voir la page allez sur http://localhost:8080
+pour voir la page allez sur http://localhost:8080
 
 Usage ./www8080 {port} le port est optionnel par défaut c'est le 8080 qui est utilisé
 
 # read_rss 
 
-Permet de lire en continue un flux RSS et l'affiche sur stdout
+Permet de lire en continu un flux RSS et l'affiche sur stdout
 ./read_rss 
 Usage: ./read_rss <rss_feed_url> [refresh_rate]
 
