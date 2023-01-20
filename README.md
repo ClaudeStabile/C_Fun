@@ -1,7 +1,7 @@
 # C_Fun
 Le C C'est Fun ! Quelques bidouilles C pour ceux que ça intéresse, Contributors are welcomed
 
-### Programmes en C qui me sont spouvent utiles
+### Programmes en C qui me sont souvent utiles
 
 # www8080 
 
