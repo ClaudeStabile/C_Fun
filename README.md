@@ -10,7 +10,7 @@ Pour voir la page allez sur http://localhost:8080
 
 Usage ./www8080 {port} le port est optionnel par défaut c'est le 8080 qui est utilisé
 
-# readrss 
+# read_rss 
 
 Permet de lire en continue un flux RSS et l'affiche sur stdout
 ./read_rss 
