@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
     sprintf(command, "pico2wave -w %s -l fr-FR < %s", output_wav_file, input_file);
     system(command);
     
-    sprintf(command, "ffmpeg -i %s -c:a libvorbis -b:a 64k %s", output_wav_file, output_webm_file);
+    sprintf(command, "ffmpeg -y -i %s -c:a libvorbis -b:a 64k %s", output_wav_file, output_webm_file);
     system(command);
 
     return 0;
