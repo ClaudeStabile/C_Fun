@@ -30,6 +30,18 @@ Usage ./PlayAudioWebmOnWeb music.webm
 
 Parse le fichier de log access.log en argument et extrait les adresses IP par nombre de connexions décroissantes
 
+# mus_8080
+
+Permet de jouer un fichier de music ou audio webm sur le port 8080 que l'on peut écouter en allant sur http//localhost:8080
+
+# text2webm 
+
+Permet de produire un fichier au format wav et webm à partir d'un fichier texte. Utilise picotts et ffmpeg
+
+# read_rss2
+
+Permet de lire une URL rss et de produire le format HTML
+
 
 # Install 
 
