@@ -31,3 +31,6 @@ Usage ./PlayAudioWebmOnWeb music.webm
 Parse le fichier de log access.log en argument et extrait les adresses IP par nombre de connexions décroissantes
 
 
+# Install 
+
+Copiez simplement les binaires sous /usr/local/bin
