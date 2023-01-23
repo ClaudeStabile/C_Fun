@@ -1,7 +1,5 @@
-# C_Fun
+# C_Fun, Le C C'est Fun ! Quelques bidouilles C pour ceux que ça intéresse, Contributors are welcomed
 ![languageC](https://user-images.githubusercontent.com/29485972/213779007-e4c127fd-848a-4119-887e-559a42fd4c01.png)
-
-Le C C'est Fun ! Quelques bidouilles C pour ceux que ça intéresse, Contributors are welcomed
 
 ### Programmes en C qui me sont souvent utiles
 
