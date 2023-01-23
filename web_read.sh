@@ -22,6 +22,7 @@ fi
 
 # Code pour traiter l'URL ici
 echo "Processing URL: $url"
+echo "CTRL + C pour arrêter la diffusion"
 if $web; then
   echo "Web option is set"
   curlwwwtext $1 > rssclaude.txt && text2webm rssclaude.txt rssclaude.wav rssclaude.webm && mus_8080 rssclaude.webm
