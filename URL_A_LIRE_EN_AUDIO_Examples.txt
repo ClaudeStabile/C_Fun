@@ -1,0 +1,11 @@
+Pour chaque URL Lancer simplement le script 
+
+Par exemple : ./web_read.sh https://www.afp.com/fr/au-fil-de-lafp
+
+AFP : https://www.afp.com/fr/au-fil-de-lafp
+20min : https://www.20min.ch/fr
+lematin : https://www.lematin.ch/
+blick : https://www.blick.ch/fr/news/suisse/ 
+
+etc etc ...
+

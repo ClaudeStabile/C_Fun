@@ -68,3 +68,7 @@ Pour diffuser sur http://localhost:8080 ./web_read.sh https://www.lematin.ch/fr 
 # Install 
 
 Copiez simplement les binaires sous /usr/local/bin
+
+Package : tar cvzf ../c_fun_0_0_1.tar.gz --exclude .git .
+
+
