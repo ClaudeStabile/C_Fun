@@ -1,10 +1,6 @@
 # C_Fun
 ![languageC](https://user-images.githubusercontent.com/29485972/213779007-e4c127fd-848a-4119-887e-559a42fd4c01.png)
 
-[![pc3dscreentouchtexte](https://user-images.githubusercontent.com/29485972/213779007-e4c127fd-848a-4119-887e-559a42fd4c01.png)](https://user-images.githubusercontent.com/29485972/214055888-320b73c0-baab-47f5-814d-f95ec5892a63.webm)
-
-[![pc3dscreentouchtexte](https://user-images.githubusercontent.com/29485972/169356887-c113f146-f597-4f07-a954-35191da7a3a6.png)](https://user-images.githubusercontent.com/29485972/214055888-320b73c0-baab-47f5-814d-f95ec5892a63.webm)
-
 Le C C'est Fun ! Quelques bidouilles C pour ceux que ça intéresse, Contributors are welcomed
 
 ### Programmes en C qui me sont souvent utiles
@@ -58,9 +54,11 @@ Permet de transcrire/lire un texte et produire le fichier auformat webm et wav
 
 # curlwwwtext
 
-Permet de lire un site www au format texte, fonctionne avec la plupart des sites d'informations
+web_read.sh Script qui permet de lire un site www au format texte, fonctionne avec la plupart des sites d'informations
 
 # ./web_read.sh https://www.lematin.ch/fr
+
+[![pc3dscreentouchtexte](https://user-images.githubusercontent.com/29485972/169356887-c113f146-f597-4f07-a954-35191da7a3a6.png)](https://user-images.githubusercontent.com/29485972/214055888-320b73c0-baab-47f5-814d-f95ec5892a63.webm)
 
 Exemple de script qui combine la production d'un fichier son avec la lecture des textes sur le site.
 Le son est soit diffusé sur la sortie son de votre PC soit servi au format HTML5 sur l'URL http://localhost:8080
