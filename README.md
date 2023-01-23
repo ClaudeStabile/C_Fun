@@ -5,6 +5,12 @@ Le C C'est Fun ! Quelques bidouilles C pour ceux que ça intéresse, Contributor
 
 ### Programmes en C qui me sont souvent utiles
 
+
+Dépendances
+
+apt install python3-html2text
+apt install libttspico-utils
+
 # www8080 
 
 C'est un micro serveur www qui sert la page index.html du repertoire sur le port 8080, on peut passer un autre port en argument
@@ -42,6 +48,22 @@ Permet de produire un fichier au format wav et webm à partir d'un fichier texte
 
 Permet de lire une URL rss et de produire le format HTML
 
+# text2webm
+
+Permet de transcrire/lire un texte et produire le fichier auformat webm et wav
+
+# curlwwwtext
+
+Permet de lire un site www au format texte, fonctionne avec la plupart des sites d'informations
+
+# ./web_read.sh https://www.lematin.ch/fr
+
+Exemple de script qui combine la production d'un fichier son avec la lecture des textes sur le site.
+Le son est soit diffusé sur la sortie son de votre PC soit servi au format HTML5 sur l'URL http://localhost:8080
+Exemples
+ 
+Pour écouter : ./web_read.sh https://www.lematin.ch/fr
+Pour diffuser sur http://localhost:8080 ./web_read.sh https://www.lematin.ch/fr --web
 
 # Install 
 

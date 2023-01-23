@@ -7,7 +7,7 @@
 # nécessite les packages curlwwwtext text2web mus_8080 du repository : https://github.com/ClaudeStabile/C_Fun
 # Nécessite aussi les packages ubuntu html2text et libttspico-utils
 # Vérification des arguments
-  
+export PATH=.:$PATH 
 if [ "$1" == "--help" ]; then
   echo "Usage: $0 URL [--web]"
   exit 0
