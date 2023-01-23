@@ -56,7 +56,7 @@ Permet de transcrire/lire un texte et produire le fichier auformat webm et wav
 web_read.sh Script qui permet de lire un site www au format texte, fonctionne avec la plupart des sites d'informations
 
 # ./web_read.sh 
-
+Cliquez sur l'image ci-après pour voir la VIDEO
 [![Videoafpwebm](https://user-images.githubusercontent.com/29485972/214061109-85048294-724c-4dfa-8d45-dc46d8ff9c7e.png)](https://user-images.githubusercontent.com/29485972/214055888-320b73c0-baab-47f5-814d-f95ec5892a63.webm)
 Vidéo avec écoute des news de l'AFP en audio
 Exemple de script qui combine la production d'un fichier son avec la lecture des textes sur le site.
