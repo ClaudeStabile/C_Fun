@@ -58,7 +58,7 @@ web_read.sh Script qui permet de lire un site www au format texte, fonctionne av
 # ./web_read.sh https://www.lematin.ch/fr
 
 [![pc3dscreentouchtexte](https://user-images.githubusercontent.com/29485972/169356887-c113f146-f597-4f07-a954-35191da7a3a6.png)](https://user-images.githubusercontent.com/29485972/214055888-320b73c0-baab-47f5-814d-f95ec5892a63.webm)
-
+Vidéo avec écoute des news de l'AFP en audio
 Exemple de script qui combine la production d'un fichier son avec la lecture des textes sur le site.
 Le son est soit diffusé sur la sortie son de votre PC soit servi au format HTML5 sur l'URL http://localhost:8080
 Exemples
