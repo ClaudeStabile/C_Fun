@@ -65,10 +65,11 @@ Exemples
 Pour écouter : ./web_read.sh https://www.lematin.ch/fr
 Pour diffuser sur http://localhost:8080 ./web_read.sh https://www.lematin.ch/fr --web
 
-# Install 
+# Installation
 
-Copiez simplement les binaires sous /usr/local/bin
-
+### Via Package :
 Package : tar cvzf ../c_fun_0_0_1.tar.gz --exclude .git .
+Et copiez simplement les binaires sous /usr/local/bin
 
-
+### Via Github
+git clone https://github.com/ClaudeStabile/C_Fun
