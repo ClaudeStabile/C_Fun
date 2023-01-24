@@ -69,7 +69,7 @@ Pour diffuser sur http://localhost:8080 ./web_read.sh https://www.lematin.ch/fr 
 # Installation
 ### Via Package debian :
 Package Debian :
-wget https://github.com/ClaudeStabile/C_Fun/releases/download/first_release/c-fun_0.10-3_amd64.deb && sudo dpkg -i c-fun_0.10-3_amd64.deb 
+__wget https://github.com/ClaudeStabile/C_Fun/releases/download/first_release/c-fun_0.10-3_amd64.deb && sudo dpkg -i c-fun_0.10-3_amd64.deb__ 
 ### Installation manuelle via Package tar.gz :
 Package tar.gz : 
 wget https://github.com/ClaudeStabile/C_Fun/releases/download/first_release/c_fun_0_0_3.tar.gz && tar xvzf c_fun_0_0_3.tar.gz 
