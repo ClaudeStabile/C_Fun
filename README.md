@@ -67,9 +67,10 @@ Pour écouter : ./web_read.sh https://www.lematin.ch/fr
 Pour diffuser sur http://localhost:8080 ./web_read.sh https://www.lematin.ch/fr --web
 
 # Installation
+### Via Package debian :
 
-### Via Package :
-Package tar.gz : tar cvzf ../c_fun_0_0_1.tar.gz --exclude .git .
+### Via Package tar.gz :
+Package tar.gz : wget https://github.com/ClaudeStabile/C_Fun/releases/download/first_release/c_fun_0_0_3.tar.gz && tar xvzf c_fun_0_0_3.tar.gz 
 Et copiez simplement les binaires sous /usr/local/bin
 
 ### Via Github
