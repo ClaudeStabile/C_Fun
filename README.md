@@ -33,7 +33,7 @@ Usage ./PlayAudioWebmOnWeb music.webm
 
 # ip_nginx
 
-Parse le fichier de log access.log en argument et extrait les adresses IP par nombre de connexions décroissantes
+Parse tous les fichier de log d'un repertoire par exemple /var/log/nginx et extrait les adresses IP par nombre de connexions décroissantes
 
 # mus_8080
 
