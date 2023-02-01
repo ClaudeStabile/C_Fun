@@ -64,6 +64,17 @@ dépendance :
 
 sudo apt install wkhtmltopdf -y
 
+#ufw_ip 
+
+Attention, un fichier ufw.log doit se trouver dans le répertoire courant
+Extrait toutes les adresses IP qui cont accédés à un port bloqué
+
+
+# mp3tohttp
+
+Usage: ./mp3tohttp <input_file.mp3> <port>
+
+Permet de jouer un fichier mp3 via web sur le port choisi
 
 
 =======
