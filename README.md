@@ -75,6 +75,8 @@ Extrait toutes les adresses IP qui cont accédés à un port bloqué
 Usage: ./mp3tohttp <input_file.mp3> <port>
 
 Permet de jouer un fichier mp3 via web sur le port choisi
+Dépendance :
+sudo apt install libmicrohttpd12
 
 
 =======
