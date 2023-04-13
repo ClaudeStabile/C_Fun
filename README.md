@@ -10,6 +10,15 @@ apt install python3-html2text
 
 apt install libttspico-utils
 
+# NUMERO6_FS
+![screenshot6](https://user-images.githubusercontent.com/29485972/217359914-ed788c04-f87e-4b2d-90a1-35cac3f85b01.png)
+
+![QRCode_Tel_Free_Solutions_Border](https://user-images.githubusercontent.com/29485972/217361052-08df22d9-33ba-47d7-b303-ee7ae346d782.png)
+
+
+Lance un call audio dans un terminal permet de parler et d'échanger via une URL webRTC.
+voir ==> https://github.com/ClaudeStabile/NUMERO6
+
 # www8080 
 
 C'est un micro serveur www qui sert la page index.html du repertoire sur le port 8080, on peut passer un autre port en argument
@@ -75,6 +84,8 @@ Extrait toutes les adresses IP qui cont accédés à un port bloqué
 Usage: ./mp3tohttp <input_file.mp3> <port>
 
 Permet de jouer un fichier mp3 via web sur le port choisi
+Dépendance :
+sudo apt install libmicrohttpd12
 
 
 =======
@@ -93,10 +104,10 @@ Pour diffuser sur http://localhost:8080 ./web_read.sh https://www.lematin.ch/fr 
 # Installation
 ### Via Package debian :
 Package Debian :  
-__wget https://github.com/ClaudeStabile/C_Fun/releases/download/first_release/c-fun_0.10-3_amd64.deb && sudo dpkg -i c-fun_0.10-3_amd64.deb__  
+__wget https://github.com/ClaudeStabile/C_Fun/releases/download/0.30/c-fun_0.30-3_amd64.deb && sudo dpkg -i c-fun_0.30-3_amd64.deb__  
 ### Installation manuelle via Package tar.gz :
 Package tar.gz :  
-__wget https://github.com/ClaudeStabile/C_Fun/releases/download/first_release/c_fun_0_0_3.tar.gz && tar xvzf c_fun_0_0_3.tar.gz__  
+__wget https://github.com/ClaudeStabile/C_Fun/archive/refs/tags/0.30.tar.gz && tar xvzf 0.30.tar.gz__  
 Et copiez simplement les binaires sous /usr/local/bin
 
 ### Via Github
