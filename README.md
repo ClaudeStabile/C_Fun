@@ -87,6 +87,9 @@ Permet de jouer un fichier mp3 via web sur le port choisi
 Dépendance :
 sudo apt install libmicrohttpd12
 
+# chrome_xvfb URL
+Permet de lancer une session chrome multimedia en frame buffer
+
 
 =======
 # ./web_read.sh 
