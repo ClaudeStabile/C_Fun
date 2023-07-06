@@ -19,6 +19,13 @@ apt install libttspico-utils
 Lance un call audio dans un terminal permet de parler et d'échanger via une URL webRTC.
 voir ==> https://github.com/ClaudeStabile/NUMERO6
 
+# linto2soc_mic
+
+Capture l'audio de votre micro et fais la transcription texte directement en Live dans votre terminal.
+Fonctionne à 100% avec du logiciel LIBRE sur votre infra, n'utilise pas Google ou Apple, vous gardez le contrôle
+Attention cet outil est expérimental et ne doit pas être utilisé pour un service, si vous êtes intéressé me contacter
+La technologie utilisée est l'engine voice2text de Linagora qui est installé sur nos infra free-solutions.org
+
 # www8080 
 
 C'est un micro serveur www qui sert la page index.html du repertoire sur le port 8080, on peut passer un autre port en argument
@@ -107,10 +114,10 @@ Pour diffuser sur http://localhost:8080 ./web_read.sh https://www.lematin.ch/fr 
 # Installation
 ### Via Package debian :
 Package Debian :  
-__wget https://github.com/ClaudeStabile/C_Fun/releases/download/0.30/c-fun_0.30-3_amd64.deb && sudo dpkg -i c-fun_0.30-3_amd64.deb__  
+__wget https://github.com/ClaudeStabile/C_Fun/releases/download/0.30/c-fun_0.60-3_amd64.deb && sudo dpkg -i c-fun_0.60-3_amd64.deb__  
 ### Installation manuelle via Package tar.gz :
 Package tar.gz :  
-__wget https://github.com/ClaudeStabile/C_Fun/archive/refs/tags/0.30.tar.gz && tar xvzf 0.30.tar.gz__  
+__wget https://github.com/ClaudeStabile/C_Fun/archive/refs/tags/0.60.tar.gz && tar xvzf 0.30.tar.gz__  
 Et copiez simplement les binaires sous /usr/local/bin
 
 ### Via Github
