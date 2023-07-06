@@ -10,6 +10,10 @@ apt install python3-html2text
 
 apt install libttspico-utils
 
+sudo apt-get install libwebsockets-dev
+
+sudo apt-get install libjansson-dev 
+
 # NUMERO6_FS
 ![screenshot6](https://user-images.githubusercontent.com/29485972/217359914-ed788c04-f87e-4b2d-90a1-35cac3f85b01.png)
 
@@ -29,6 +33,7 @@ La technologie utilisée est l'engine voice2text de Linagora qui est installé s
 Dépendances : Nécéssite le package libwebsockets-dev
 
 sudo apt-get install libwebsockets-dev
+sudo apt-get install libjansson-dev 
 
 # www8080 
 
