@@ -26,6 +26,10 @@ Fonctionne à 100% avec du logiciel LIBRE sur votre infra, n'utilise pas Google 
 Attention cet outil est expérimental et ne doit pas être utilisé pour un service, si vous êtes intéressé me contacter
 La technologie utilisée est l'engine voice2text de Linagora qui est installé sur nos infra free-solutions.org
 
+Dépendances : Nécéssite le package libwebsockets-dev
+
+sudo apt-get install libwebsockets-dev
+
 # www8080 
 
 C'est un micro serveur www qui sert la page index.html du repertoire sur le port 8080, on peut passer un autre port en argument
