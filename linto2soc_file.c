@@ -6,9 +6,11 @@
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 
+// gcc -I/usr/local/include linto2soc_file.c -o linto2soc_file -l websockets -l jansson
 
 #define AUDIO_FILE_PATH "audio.wav"
 #define CONFIG_JSON "{\"config\": {\"sample_rate\":192000}}"
+
 
 static int callback(struct lws *wsi, enum lws_callback_reasons reason,
                     void *user, void *in, size_t len)
@@ -39,8 +41,12 @@ char input_file[256];
 // const char *input_file = "2-wordpress.webm";
     char command[512];
     snprintf(command, sizeof(command),
-             "ffmpeg -i %s -ar 192000 -ac 1 -acodec pcm_s16le -hide_banner -loglevel quiet -nostats -f wav -",
-             input_file);
+             // "ffmpeg -i %s -ar 192000 -ac 1 -acodec pcm_s16le -hide_banner -loglevel quiet -nostats -f wav -",
+             // input_file);
+
+"ffmpeg -i %s -ar 48000 -ac 1 -acodec pcm_s16le -hide_banner -loglevel quiet -nostats -f wav -",
+         input_file);
+
 audio_file = popen(command, "r");
 // audio_file = popen("ffmpeg -f alsa -i default -ar 192000 -ac 1 -acodec pcm_s16le -hide_banner -loglevel quiet -nostats -f wav -", "r");
       
@@ -51,6 +57,7 @@ audio_file = popen(command, "r");
             break;
 
 	    case LWS_CALLBACK_CLIENT_RECEIVE:
+
     json_t *root, *text;
     json_error_t error;
 
