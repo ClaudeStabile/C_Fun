@@ -8,8 +8,7 @@
 
 // gcc -I/usr/local/include linto2soc_file.c -o linto2soc_file -l websockets -l jansson
 
-#define AUDIO_FILE_PATH "audio.wav"
-#define CONFIG_JSON "{\"config\": {\"sample_rate\":192000}}"
+#define CONFIG_JSON "{\"config\": {\"sample_rate\":%d}}"
 
 
 static int callback(struct lws *wsi, enum lws_callback_reasons reason,
@@ -20,107 +19,110 @@ static int callback(struct lws *wsi, enum lws_callback_reasons reason,
     static FILE *audio_file;
     size_t n;
 
-    switch (reason) {
-        case LWS_CALLBACK_CLIENT_ESTABLISHED:
-            printf("WebSocket connection established\n");
+    switch (reason)
+    {
+    case LWS_CALLBACK_CLIENT_ESTABLISHED:
+        printf("WebSocket connection established\n");
 
-            // Send config JSON
-            n = sprintf((char *)p, "%s", CONFIG_JSON);
-            lws_write(wsi, p, n, LWS_WRITE_TEXT);
+        char input_file[256];
+        // Demander à l'utilisateur le nom du fichier webm à utiliser
+        printf("Entrez le nom du fichier son : ");
+        if (scanf("%255s", input_file) != 1)
+        {
+            printf("Erreur lors de la saisie du nom de fichier.\n");
+            exit(EXIT_FAILURE);
+        }
 
-char input_file[256];
-// Demander à l'utilisateur le nom du fichier webm à utiliser
-    printf("Entrez le nom du fichier webm : ");
-    if (scanf("%255s", input_file) != 1) {
-        printf("Erreur lors de la saisie du nom de fichier.\n");
-        exit(EXIT_FAILURE);
-    }
+        int sample_rate;
+        printf("Entrez le sample rate : ");
+        scanf("%d", &sample_rate);
+        char config_json[256];
+        sprintf(config_json, CONFIG_JSON, sample_rate);
+        n = sprintf((char *)p, "%s", config_json);
+        lws_write(wsi, p, n, LWS_WRITE_TEXT);
+
+        char command[512];
+        snprintf(command, sizeof(command),
+                 "ffmpeg -i %s -ar 48000 -ac 1 -acodec pcm_s16le -hide_banner -loglevel quiet -nostats -f wav -",
+                 input_file);
+
+        audio_file = popen(command, "r");
+
+        if (audio_file == NULL)
+        {
+            fprintf(stderr, "Failed to open audio file\n");
+            return -1;
+        }
+        break;
+
+    case LWS_CALLBACK_CLIENT_RECEIVE:
+
+        json_t *root, *text;
+        json_error_t error;
+
+        root = json_loads((const char *)in, 0, &error);
+        if (!root)
+        {
+            fprintf(stderr, "error: on line %d: %s\n", error.line, error.text);
+            return -1;
+        }
+
+        // Variable pour l'écriture dans un fichiet d output
+
+        FILE *fichier;
+        const char *nom_fichier = "sortie.txt";
 
 
+        text = json_object_get(root, "text");
+        if (json_is_string(text))
+        {
+            fprintf(stdout, "%s\n", json_string_value(text));
+            fflush(stdout);
 
-// const char *input_file = "2-wordpress.webm";
-    char command[512];
-    snprintf(command, sizeof(command),
-             // "ffmpeg -i %s -ar 192000 -ac 1 -acodec pcm_s16le -hide_banner -loglevel quiet -nostats -f wav -",
-             // input_file);
-
-"ffmpeg -i %s -ar 48000 -ac 1 -acodec pcm_s16le -hide_banner -loglevel quiet -nostats -f wav -",
-         input_file);
-
-audio_file = popen(command, "r");
-// audio_file = popen("ffmpeg -f alsa -i default -ar 192000 -ac 1 -acodec pcm_s16le -hide_banner -loglevel quiet -nostats -f wav -", "r");
-      
-      if (audio_file == NULL) {
-                fprintf(stderr, "Failed to open audio file\n");
-                return -1;
+            fichier = fopen(nom_fichier, "a");
+            if (fichier == NULL)
+            {
+                fprintf(stderr, "Erreur lors de l'ouverture du fichier %s\n", nom_fichier);
+                return 1;
             }
-            break;
 
-	    case LWS_CALLBACK_CLIENT_RECEIVE:
+            fprintf(fichier, "%s\n", json_string_value(text));
+            fflush(fichier);
 
-    json_t *root, *text;
-    json_error_t error;
+            fclose(fichier);
 
-    root = json_loads((const char *)in, 0, &error);
-    if (!root) {
-        fprintf(stderr, "error: on line %d: %s\n", error.line, error.text);
-        return -1;
-    }
-
-    // Variable pour l'écriture dans un fichiet d output
-    //
-    FILE *fichier;
-    const char *nom_fichier = "sortie.txt";
-//    const char *texte = "Texte à écrire dans le fichier";
-
-    text = json_object_get(root, "text");
-    if (json_is_string(text)) {
-	    fprintf(stdout, "%s\n", json_string_value(text));
-	     fflush(stdout);
-// printf("%s\n", json_string_value(text));
-//        printf("Received data: %s\n", (char *)in);
-//        print to file
-
-    fichier = fopen(nom_fichier, "a");
-    if (fichier == NULL) {
-        fprintf(stderr, "Erreur lors de l'ouverture du fichier %s\n", nom_fichier);
-        return 1;
-    }
-
-    fprintf(fichier, "%s\n", json_string_value(text));
-     fflush(fichier);
-
-    fclose(fichier);
-
-    }
+        }
 
 
-    json_decref(root);
-    break;
+        json_decref(root);
+        break;
 
 
-//            printf("Received data: %s\n", (char *)in);
-//            break;
-        case LWS_CALLBACK_CLIENT_WRITEABLE:
-            // Send audio data
-            if (audio_file != NULL) {
-                n = fread(p, 1, sizeof(buf) - LWS_PRE, audio_file);
-                if (n > 0) {
-                    lws_write(wsi, p, n, LWS_WRITE_BINARY);
-                } else {
-                    fclose(audio_file);
-                    audio_file = NULL;
-                }
+    case LWS_CALLBACK_CLIENT_WRITEABLE:
+        // Send audio data
+        if (audio_file != NULL)
+        {
+            n = fread(p, 1, sizeof(buf) - LWS_PRE, audio_file);
+            if (n > 0)
+            {
+                lws_write(wsi, p, n, LWS_WRITE_BINARY);
             }
-            break;
-        default:
-            break;
+            else
+            {
+                fclose(audio_file);
+                audio_file = NULL;
+            }
+        }
+        break;
+    default:
+        break;
     }
 
     return 0;
 }
 
-static struct lws_protocols protocols[] = {
+static struct lws_protocols protocols[] =
+{
     {
         "my-protocol",
         callback,
@@ -132,21 +134,21 @@ static struct lws_protocols protocols[] = {
 
 int main(int argc, char **argv)
 {
-    if (argc > 1 && (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0)) {
+    if (argc > 1 && (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0))
+    {
         printf("Usage: %s \n\nLancez simplement l'executable pour capturer live l'audio de votre micro et le transcrire en texte FR dans votre terminal\nCe programme utilise l'engine speech to text LINTO AI https://github.com/linto-ai/\nCe programme utilise le backend free-solutions.org en Suisse pour transcrire le text\nC'est une approche pour avoir le contrôle total sur les transcrptions texte\nC'est expérimental et donc merci de ne pas utiliser pour un service\nMe contacter si vous avez des besoins dans le domaine\n", argv[0]);
         printf("Options:\n");
         printf("  -h, --help    display this help and exit\n");
-    return 0;
+        return 0;
     }
     struct lws_context_creation_info info;
     struct lws_client_connect_info i;
     struct lws_context *context;
     const char *url = "linto.free-solutions.org";
-//    const char *url = "wss://linto.free-solutions.org";
     int port = 8081;
 
-// Adons CST
-//lws_set_log_level(LLL_ERR | LLL_WARN | LLL_NOTICE | LLL_INFO, NULL);
+    // Adons CST
+
     info.ssl_ca_filepath = "/etc/ssl/certs/ca-certificates.crt";
     info.options = LWS_SERVER_OPTION_DO_SSL_GLOBAL_INIT;
 
@@ -157,7 +159,8 @@ int main(int argc, char **argv)
     info.uid = -1;
 
     context = lws_create_context(&info);
-    if (context == NULL) {
+    if (context == NULL)
+    {
         fprintf(stderr, "Failed to create context\n");
         return -1;
     }
@@ -170,18 +173,20 @@ int main(int argc, char **argv)
     i.host = i.address;
     i.origin = i.address;
     i.ssl_connection = 0; // No SSL
-//    i.ssl_connection = LCCSCF_USE_SSL; // Use SSL
+    //    i.ssl_connection = LCCSCF_USE_SSL; // Use SSL
     i.protocol = protocols[0].name;
 
-    if (lws_client_connect_via_info(&i) == NULL) {
+    if (lws_client_connect_via_info(&i) == NULL)
+    {
         fprintf(stderr, "Failed to connect to server\n");
         return -1;
     }
 
-    while (1) {
+    while (1)
+    {
         lws_service(context, 1000);
-        lws_callback_on_writable_all_protocol(context,&protocols[0]);
-        
+        lws_callback_on_writable_all_protocol(context, &protocols[0]);
+
     }
 
     lws_context_destroy(context);
