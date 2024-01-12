@@ -10,10 +10,6 @@ apt install python3-html2text
 
 apt install libttspico-utils
 
-sudo apt-get install libwebsockets-dev
-
-sudo apt-get install libjansson-dev 
-
 # NUMERO6_FS
 ![screenshot6](https://user-images.githubusercontent.com/29485972/217359914-ed788c04-f87e-4b2d-90a1-35cac3f85b01.png)
 
@@ -30,10 +26,21 @@ Fonctionne à 100% avec du logiciel LIBRE sur votre infra, n'utilise pas Google 
 Attention cet outil est expérimental et ne doit pas être utilisé pour un service, si vous êtes intéressé me contacter
 La technologie utilisée est l'engine voice2text de Linagora qui est installé sur nos infra free-solutions.org
 
-Dépendances : Nécéssite le package libwebsockets-dev
+# speak2iallama.sh
 
-sudo apt-get install libwebsockets-dev
-sudo apt-get install libjansson-dev 
+METTEZ un Casque ou des écouteurs avant d'utiliser !!!
+Permet d'intéragir avec l'IA Free-Solutions Llama. Poser des questions et l'IA réponds en Vocal
+
+# llama-traduction-de.sh
+
+METTEZ un Casque ou des écouteurs avant d'utiliser !!!
+Et dites : "Pouvez vous répéter tout ce que je vais vous dire à partir de maintenant en Allemand"
+
+# llama-traduction-en.sh
+
+METTEZ un Casque ou des écouteurs avant d'utiliser !!!
+Et dites : "Pouvez vous répéter tout ce que je vais vous dire à partir de maintenant en Anglais"
+
 
 # www8080 
 
@@ -131,3 +138,4 @@ Et copiez simplement les binaires sous /usr/local/bin
 
 ### Via Github
 git clone https://github.com/ClaudeStabile/C_Fun
+
