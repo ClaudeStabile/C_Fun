@@ -1,4 +1,5 @@
 #!/bin/bash 
+echo "METTEZ un Casque ou des écouteurs avant d'utiliser !!!"
 echo "Dites :"
 echo "Pouvez vous répéter tout ce que je vais vous dire à partir de maintenant en Allemand"
 killall tts-FS-silent
