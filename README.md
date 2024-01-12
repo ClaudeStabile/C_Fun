@@ -32,6 +32,7 @@ METTEZ un Casque ou des écouteurs avant d'utiliser !!!
 Permet d'intéragir avec l'IA Free-Solutions Llama. Poser des questions et l'IA réponds en Vocal
 
 # llama-traduction-de.sh
+![screenshot4](https://github.com/ClaudeStabile/C_Fun/assets/29485972/f008142b-5165-4d9e-9cc9-dc72fb576702)
 
 METTEZ un Casque ou des écouteurs avant d'utiliser !!!
 Et dites : "Pouvez vous répéter tout ce que je vais vous dire à partir de maintenant en Allemand"
