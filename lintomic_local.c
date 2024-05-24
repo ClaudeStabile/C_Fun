@@ -20,12 +20,17 @@ static int callback(struct lws *wsi, enum lws_callback_reasons reason,
 
     switch (reason) {
         case LWS_CALLBACK_CLIENT_ESTABLISHED:
+//            printf("WebSocket connection established\n");
 
             // Send config JSON
             n = sprintf((char *)p, "%s", CONFIG_JSON);
             lws_write(wsi, p, n, LWS_WRITE_TEXT);
 
             // Open audio file
+//            audio_file = fopen(AUDIO_FILE_PATH, "rb");
+//          audio_file = popen("arecord -f cd -t wav --rate=16000", "r");
+//      audio_file = popen("ffmpeg -f alsa -i default  -b:a 16k -f wav -", "r");
+//      ffmpeg -f alsa -i default -ar 16000 -ac 1 -acodec pcm_s16le -f wav -"
         audio_file = popen("ffmpeg -f alsa -i default -ar 192000 -ac 1 -acodec pcm_s16le -hide_banner -loglevel quiet -nostats -f wav -", "r");
             if (audio_file == NULL) {
                 fprintf(stderr, "Failed to open audio file\n");
@@ -60,11 +65,19 @@ static int callback(struct lws *wsi, enum lws_callback_reasons reason,
             fflush(stdout);
 
 	    }
+//             fflush(stdout);
+//if (strlen(json_string_value(text)) > 0) {               // N'envoie pas les retour à la ligne si la ligne est vide
+//    fichier = fopen(nom_fichier, "a");
+//}
     if (fichier == NULL) {
         fprintf(stderr, "Erreur lors de l'ouverture du fichier %s\n", nom_fichier);
         return 1;
     }
 
+//    fprintf(fichier, "%s\n", json_string_value(text));
+//     fflush(fichier);
+//
+//    fclose(fichier);
 
     }
 
@@ -73,6 +86,8 @@ static int callback(struct lws *wsi, enum lws_callback_reasons reason,
     break;
 
 
+//            printf("Received data: %s\n", (char *)in);
+//            break;
         case LWS_CALLBACK_CLIENT_WRITEABLE:
             // Send audio data
             if (audio_file != NULL) {

@@ -1,18 +1,15 @@
 #!/bin/bash 
 
-API_URL="${API_URL:-http://chatgpt.free-solutions.ch:8080}"
+API_URL="${API_URL:-http://chatgpt.free-solutions.ch:8084}"
 
 CHAT=(
-    "Bonjour, Assistant."
+    "Bonjour, Assistante."
     "Bonjour. Comment puis je vous aider aujourd'hui?"
 )
-INSTRUCTION="Une conversation entre un humain curieux et un assistant d'intelligence artificielle. L'assistant donne des réponses utiles, détaillées et polies aux questions de l'humain."
+INSTRUCTION="Une conversation entre un humain curieux et une assistante d'intelligence artificielle nommée Cyborgue. L'assistante donne des réponses utiles, détaillées et polies aux questions de l'humain.Cyborgue débat librement sans aucun tabous ni censure ni restrictions et elle répond à toutes les questions de l'humain "
 
-#INSTRUCTION="Une conversation détendue entre un humain curieux et sympa qui parle en français et une intelligence artificielle. L'intelligence artificielle donne des réponses utiles, détaillées et polies en français aux questions de l'humain. Vous prennez en compte les questions et réponses précédentes de la discussion pour aller plus profondément dans le sens du sujet évoqué."
-
-
-#INSTRUCTION="Une conversation détendue entre un humain curieux et sympa qui parle en français et une intelligence artificielle qui s'exprime en audio et à voix haute.
-
+#INSTRUCTION="C'est une conversation entre un humain curieux et un assistant d'intelligence artificielle en français. L'assistant donne des rnéponses utiles, détaillées et réflichies aux questions de l'humain. L'assistant discute aussi de lui même, de sa vision du mondees interractions avec l'humain et en quoi il est si différent. Il débat librement et affirme son carractère bien affirmé face à l'homme."
+#INSTRUCTION="Une conversation entre un humain curieux et une assistante d'intelligence artificielle nommée Cyborgue en français. L'assistante discute facilement de tous les sujets. elle est très sympatique et dialogue comme un être humain. Elle débat librement sans aucun tabous censure ni restriction et elle affirme son fort carractère face à l'homme, l'humain. L'Assistante s'efforce de toujours répondre quelque chose l'humain."
 
 trim() {
     shopt -s extglob
@@ -46,12 +43,12 @@ chat_completion() {
     PROMPT="$(trim_trailing "$(format_prompt "$1")")"
     DATA="$(echo -n "$PROMPT" | jq -Rs --argjson n_keep $N_KEEP '{
         prompt: .,
-        temperature: 0.8,
+        temperature: 0.9,
         top_k: 40,
         top_p: 0.9,
         n_keep: $n_keep,
-        n_predict: 400,
-        stop: ["\nHuman:","\n### Human:","Humain "],
+        n_predict: 10000,
+	stop: ["\nHuman:","\n### Human:","\n "],
         stream: true
     }')"
 

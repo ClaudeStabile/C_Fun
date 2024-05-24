@@ -29,6 +29,7 @@ int main(int argc, char *argv[]) {
 
     while (1) {
         // Read the text data from stdin
+//    system("amixer set Capture cap"); //enable mic
         char input_buffer[2048];
         // printf("Enter the text to send (or 'exit' to quit): ");
         if (!fgets(input_buffer, sizeof(input_buffer), stdin)) {
@@ -77,8 +78,10 @@ int main(int argc, char *argv[]) {
             fclose(file); // Close the file
 
             // Play the generated tts.wav file using aplay
-            system("aplay -q tts.wav");
-            fflush(stdout);
+            system("amixer -q -D pulse sset Capture toggle");
+            system("aplay tts.wav");
+	    system("amixer -q -D pulse sset Capture toggle");
+            fflush(stdin);
         }
 
         // Clean up and release resources
