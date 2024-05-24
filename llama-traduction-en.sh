@@ -1,6 +1,5 @@
 #!/bin/bash 
-echo "METTEZ un Casque ou des écouteurs avant d'utiliser !!!"
-echo "Dites :"
+echo "Dites à haute voix :"
 echo "Pouvez vous répéter tout ce que je vais vous dire à partir de maintenant en Anglais"
 killall tts-FS-silent
 sleep 1
