@@ -32,20 +32,26 @@ La technologie utilisée est l'engine voice2text de Linagora qui est installé s
 
 # speak2iallama.sh
 
-METTEZ un Casque ou des écouteurs avant d'utiliser !!!
-Permet d'intéragir avec l'IA Free-Solutions Llama. Poser des questions et l'IA réponds en Vocal
+Permet d'intéragir avec l'IA Free-Solutions Mistral. Poser des questions et l'IA réponds en Vocal
+
+# speak2iallamaFB.sh
+
+Permet d'intéragir avec l'IA Free-Solutions Llama3. Poser des questions et l'IA réponds en Vocal
 
 # llama-traduction-de.sh
 ![screenshot4](https://github.com/ClaudeStabile/C_Fun/assets/29485972/f008142b-5165-4d9e-9cc9-dc72fb576702)
 
-METTEZ un Casque ou des écouteurs avant d'utiliser !!!
 Et dites : "Pouvez vous répéter tout ce que je vais vous dire à partir de maintenant en Allemand"
 
 # llama-traduction-en.sh
 
-METTEZ un Casque ou des écouteurs avant d'utiliser !!!
 Et dites : "Pouvez vous répéter tout ce que je vais vous dire à partir de maintenant en Anglais"
 
+# chat-commandline-new.sh
+
+Mode command line vocal / experimental
+lintomic_local | llama-traduction-en.sh
+Pilote Linux en Vocal, à utiliser avec précautions
 
 # www8080 
 
