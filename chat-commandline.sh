@@ -2,9 +2,9 @@
 
 #API_URL="${API_URL:-http://chatgpt.free-solutions.ch:8080}"
 
-#API_URL="${API_URL:-http://192.168.1.96:8080}"
+API_URL="${API_URL:-http://192.168.1.96:8080}"
 
-API_URL="${API_URL:-http://192.168.1.96:8084}"
+#API_URL="${API_URL:-http://192.168.1.96:8084}"
 
 CHAT=(
     "Bonjour, Assistant."
