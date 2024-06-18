@@ -2,7 +2,7 @@
 ![languageC](https://user-images.githubusercontent.com/29485972/213779007-e4c127fd-848a-4119-887e-559a42fd4c01.png)
 
 ### Programmes & outils Free-Solutions en C & bash 
-
+Package pour Ubuntu, Mint, Debian & Free-SOlutions OS
 
 ## Dépendances
 
