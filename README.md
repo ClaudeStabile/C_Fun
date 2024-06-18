@@ -30,7 +30,7 @@ Fonctionne à 100% avec du logiciel LIBRE sur votre infra, n'utilise pas Google 
 Attention cet outil est expérimental et ne doit pas être utilisé pour un service, si vous êtes intéressé me contacter
 La technologie utilisée est l'engine voice2text de Linagora qui est installé sur nos infra free-solutions.org
 
-[Intelligence Artificielle en mode vocal][https://www.youtube.com/watch?v=xtJVW42iSZM]
+
 
 # speak2iallama.sh
 
