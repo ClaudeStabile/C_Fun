@@ -2,7 +2,7 @@
 ![languageC](https://user-images.githubusercontent.com/29485972/213779007-e4c127fd-848a-4119-887e-559a42fd4c01.png)
 
 ### Programmes & outils Free-Solutions d'interraction avec les IA privées 
-Package pour Ubuntu, Mint, Debian & Free-SOlutions OS
+Package pour Ubuntu, Mint, Debian & Free-Solutions OS
 
 ## Dépendances
 
@@ -14,14 +14,7 @@ apt install jq
 
 apt install libwebsockets-dev
 
-# NUMERO6_FS
-![screenshot6](https://user-images.githubusercontent.com/29485972/217359914-ed788c04-f87e-4b2d-90a1-35cac3f85b01.png)
 
-![QRCode_Tel_Free_Solutions_Border](https://user-images.githubusercontent.com/29485972/217361052-08df22d9-33ba-47d7-b303-ee7ae346d782.png)
-
-
-Lance un call audio dans un terminal permet de parler et d'échanger via une URL webRTC.
-voir ==> https://github.com/ClaudeStabile/NUMERO6
 
 # linto2soc_mic
 
@@ -54,6 +47,15 @@ Et dites : "Pouvez vous répéter tout ce que je vais vous dire à partir de mai
 Mode command line vocal / experimental
 lintomic_local | llama-traduction-en.sh
 Pilote Linux en Vocal, à utiliser avec précautions
+
+# NUMERO6_FS
+![screenshot6](https://user-images.githubusercontent.com/29485972/217359914-ed788c04-f87e-4b2d-90a1-35cac3f85b01.png)
+
+![QRCode_Tel_Free_Solutions_Border](https://user-images.githubusercontent.com/29485972/217361052-08df22d9-33ba-47d7-b303-ee7ae346d782.png)
+
+
+Lance un call audio dans un terminal permet de parler et d'échanger via une URL webRTC.
+voir ==> https://github.com/ClaudeStabile/NUMERO6
 
 # www8080 
 
