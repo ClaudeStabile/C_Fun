@@ -1,10 +1,10 @@
 ### Le C C'est Fun ! Quelques bidouilles C pour ceux que ça intéresse, Contributors are welcomed
 ![languageC](https://user-images.githubusercontent.com/29485972/213779007-e4c127fd-848a-4119-887e-559a42fd4c01.png)
 
-### Programmes en C qui me sont souvent utiles
+### Programmes & outils Free-Solutions en C & bash 
+Package pour Ubuntu, Mint, Debian & Free-SOlutions OS
 
-
-Dépendances
+## Dépendances
 
 apt install python3-html2text
 
@@ -29,6 +29,8 @@ Capture l'audio de votre micro et fais la transcription texte directement en Liv
 Fonctionne à 100% avec du logiciel LIBRE sur votre infra, n'utilise pas Google ou Apple, vous gardez le contrôle
 Attention cet outil est expérimental et ne doit pas être utilisé pour un service, si vous êtes intéressé me contacter
 La technologie utilisée est l'engine voice2text de Linagora qui est installé sur nos infra free-solutions.org
+
+
 
 # speak2iallama.sh
 
