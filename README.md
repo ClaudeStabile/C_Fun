@@ -36,9 +36,9 @@ La technologie utilisée est l'engine voice2text de Linagora qui est installé s
 
 Permet d'intéragir avec l'IA Free-Solutions Mistral. Poser des questions et l'IA réponds en Vocal
 
-# speak2iallamaFB.sh
+# speak2iallama-multi.sh
 
-Permet d'intéragir avec l'IA Free-Solutions Llama3. Poser des questions et l'IA réponds en Vocal
+Permet d'intéragir avec l'IA Free-Solutions en mode ultra naturel. Poser des questions et l'IA réponds en Vocal
 
 # llama-traduction-de.sh
 ![screenshot4](https://github.com/ClaudeStabile/C_Fun/assets/29485972/f008142b-5165-4d9e-9cc9-dc72fb576702)
