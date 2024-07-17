@@ -1,7 +1,7 @@
-### Le C C'est Fun ! Quelques bidouilles C pour ceux que ça intéresse, Contributors are welcomed
+### L'intelligence artificielle de Free-Solutions Sàrl en mode vocal ! 
 ![languageC](https://user-images.githubusercontent.com/29485972/213779007-e4c127fd-848a-4119-887e-559a42fd4c01.png)
 
-### Programmes & outils Free-Solutions en C & bash 
+### Programmes & outils Free-Solutions d'interraction avec les IA privées 
 Package pour Ubuntu, Mint, Debian & Free-SOlutions OS
 
 ## Dépendances
