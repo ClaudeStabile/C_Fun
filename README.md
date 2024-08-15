@@ -14,7 +14,7 @@ apt install jq
 
 apt install libwebsockets-dev
 
-
+apt install libjansson-dev
 
 # linto2soc_mic
 
