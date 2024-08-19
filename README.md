@@ -16,6 +16,8 @@ apt install libwebsockets-dev
 
 apt install libjansson-dev
 
+apt install pulseaudio
+
 # linto2soc_mic
 
 Capture l'audio de votre micro et fais la transcription texte directement en Live dans votre terminal.
