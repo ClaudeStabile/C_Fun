@@ -87,7 +87,7 @@ while true; do
 #    echo $ANSWER |  grep -v bash | tr -d "'" | cut -c 5- 
 #    exec `echo $ANSWER | grep CMD |  grep -v bash | tr -d "'" | cut -c 5-` &
 #    exec `echo $ANSWER | grep CMD |  grep -v bash | tr -d "\"" | tr -d "'" | cut -c 5-` &  
-    ./launchbg `echo $ANSWER | grep CMD |  grep -v bash | tr -d "\"" | tr -d "'" | tr -d "&" | cut -c 5-`  
+    launchbg `echo $ANSWER | grep CMD |  grep -v bash | tr -d "\"" | tr -d "'" | tr -d "&" | cut -c 5-`  
 clear
 #    exec  `echo $ANSWER | grep CMD |  grep -v bash | tr -d "'" | tr -d "\""| cut -c 5-` &
 #    clear
