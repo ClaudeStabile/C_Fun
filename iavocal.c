@@ -167,7 +167,7 @@ static int callback(struct lws *wsi, enum lws_callback_reasons reason, void *use
     size_t n;
     switch (reason) {
         case LWS_CALLBACK_CLIENT_ESTABLISHED:
-            printf("WebSocket connection established\n");
+//            printf("WebSocket connection established\n");
             global_wsi = wsi;
             n = sprintf((char *)p, "%s", CONFIG_JSON);
             if (lws_write(wsi, p, n, LWS_WRITE_TEXT) < 0) return -1;
@@ -182,7 +182,7 @@ static int callback(struct lws *wsi, enum lws_callback_reasons reason, void *use
                 if (json_is_string(text)) {
                     const char *received_text = json_string_value(text);
                     if (strlen(received_text) > 0) {
-                        printf("%s\n", received_text);
+//                        printf("%s\n", received_text);
                         FILE *fichier = fopen("sortie.txt", "a");
                         if (fichier) {
                             fprintf(fichier, "%s\n", received_text);
