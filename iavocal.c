@@ -167,7 +167,8 @@ void chat_completion(const char* question, const char* tts_url, const char* spea
     }
 }
 
-static int callback(struct lws *wsi, enum lws_callback_reasons reason, void *user, void *in, size_t len) {
+static int callback(struct lws *wsi, enum lws_callback_reasons reason, void *user, void *in, size_t len) { 
+
     unsigned char buf[LWS_PRE + 51200], *p = &buf[LWS_PRE];
     size_t n;
     switch (reason) {
@@ -213,9 +214,11 @@ static int callback(struct lws *wsi, enum lws_callback_reasons reason, void *use
                 }
             }
             break;
-	            case LWS_CALLBACK_CLIENT_CLOSED:
-            global_wsi = NULL;
-            break;
+
+    case LWS_CALLBACK_CLIENT_CLOSED:
+        global_wsi = NULL;
+        should_reconnect = 1;
+        break;
 
         default:
             break;
@@ -286,22 +289,22 @@ int main(int argc, char **argv) {
     }
 
 //    while (lws_service(context, 1000) >= 0);
-   while (1) {
-	           lws_service(global_context, 1000);
-		           if (should_reconnect) {
-//            printf("Reconnecting to WebSocket...\n");
-            lws_cancel_service(global_context);
-            while (global_wsi) {
-                lws_service(global_context, 1000);
-            }
-            wsi = connect_to_websocket(global_context);
-            if (!wsi) {
-                fprintf(stderr, "Failed to reconnect to WebSocket\n");
-                break;
-            }
-            should_reconnect = 0;
+while (1) {
+    lws_service(global_context, 1000);
+
+    if (should_reconnect) {
+        printf("Reconnecting to WebSocket...\n");
+        while (global_wsi) {
+            lws_service(global_context, 1000);
         }
-   }
+        wsi = connect_to_websocket(global_context);
+        if (!wsi) {
+            fprintf(stderr, "Failed to reconnect to WebSocket\n");
+            break;
+        }
+        should_reconnect = 0;
+    }
+}
 
     lws_context_destroy(context);
     for (int i = 0; i < chat_size; i++) free(chat[i]);
