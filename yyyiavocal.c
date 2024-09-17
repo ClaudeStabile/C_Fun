@@ -271,7 +271,7 @@ int main(int argc, char **argv) {
     chat[chat_size++] = strdup("Bonjour, Assistant.");
     chat[chat_size++] = strdup("Bonjour. Comment puis je vous aider aujourd'hui?");
 
-    lws_set_log_level(LLL_ERR | LLL_WARN | LLL_NOTICE, NULL);
+    lws_set_log_level(LLL_ERR , NULL);
     info.port = CONTEXT_PORT_NO_LISTEN;
     info.protocols = protocols;
     info.gid = -1;
