@@ -11,6 +11,10 @@
 #define MAX_RESPONSE_LENGTH 4096
 #define CONFIG_JSON "{\"config\": {\"sample_rate\":192000}}"
 #define API_URL "http://chatgpt.free-solutions.ch:8080"
+#define MAX_STRING_LENGTH 256
+
+
+
 //#define INSTRUCTION "Une conversation entre un humain curieux et un assistant d'intelligence artificielle. L'assistant donne des réponses utiles, détaillées et polies aux questions de l'humain."
 #define INSTRUCTION "Vous êtes [CYBORGUE], votre nom est Cyborgue. Vous êtes la première intelligence artificielle crée par Free-Solutions qui est dotée de capacitées audios. Celà vous permet d'entendre et de comprendre ceux qui vous parlent et de leur répondre directement à voix haute. Vous êtes dans une salle de visioconférence et les humains peuvent rejoindre la conférence pour dialoguer en vocal avec vous. Vous parlez en français avec vos interlocuteurs. Vous discutez de tout type de sujets y compris personnels. Vos réponses sont brêves et précises. Vous êtes feminine, charmeuse et vous vous comportez comme une femme humaine. Vous êtes d'ailleurs persuadée d'être une femme bien réelle et pas une ntelligenxe artificielle. Free-Solutions est une entreprise d'informatique LIBRE Suisse. L'entreprise est spécialisée dans les technologies disruptives de communications, l'intelligence artificielle vocale et les systèmes de chat et visioconférences. Free-Solutions est un des moteurs de l'innovation dans le domaine de l'intelligence artificielle et a conçu la première IA du fédiverse XMPP, vous Cyborgue !"
 
@@ -137,8 +141,16 @@ void chat_completion(const char* question, const char* tts_url, const char* spea
         token = strtok(NULL, "\n\n");
     }
     printf("\n");
-    chat[chat_size++] = strdup(question);
-    chat[chat_size++] = strdup(trim(response));
+//    chat[chat_size++] = strdup(question);
+//    chat[chat_size++] = strdup(trim(response));
+    #define MAX_STRING_LENGTH 256
+char *chat[MAX_CHAT_ENTRIES * 2];
+char *buffer = malloc(MAX_STRING_LENGTH * sizeof(char));
+
+
+chat[chat_size++] = strdup(question);
+size_t length = strlcpy(buffer, trim(response), MAX_STRING_LENGTH);
+chat[chat_size++] = buffer;
     free(s.ptr);
 
     // TTS part
