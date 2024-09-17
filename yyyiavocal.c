@@ -48,10 +48,10 @@ void format_prompt(char* prompt, size_t prompt_size, const char* question) {
     int written = snprintf(prompt, prompt_size, "%s\n", INSTRUCTION);
     size_t remaining = prompt_size - written;
     for (int i = 0; i < chat_size && remaining > 0; i += 2) {
-        written = snprintf(prompt + strlen(prompt), remaining, "### Human: %s\n### Assistant: %s\n", chat[i], chat[i + 1]);
+        written = snprintf(prompt + strlen(prompt), remaining, "### Human: %s\n### Cyborgue: %s\n", chat[i], chat[i + 1]);
         remaining -= written;
     }
-    if (remaining > 0) snprintf(prompt + strlen(prompt), remaining, "### Human: %s\n### Assistant: ", question);
+    if (remaining > 0) snprintf(prompt + strlen(prompt), remaining, "### Human: %s\n### Cyborgue: ", question);
 }
 
 int tokenize(const char* content) {
@@ -204,11 +204,11 @@ static int callback(struct lws *wsi, enum lws_callback_reasons reason, void *use
                 if (yyjson_is_str(text)) {
                     const char *received_text = yyjson_get_str(text);
                     if (strlen(received_text) > 0) {
-                        FILE *fichier = fopen("sortie.txt", "a");
-                        if (fichier) {
-                            fprintf(fichier, "%s\n", received_text);
-                            fclose(fichier);
-                        }
+//                        FILE *fichier = fopen("sortie.txt", "a");
+//                        if (fichier) {
+//                            fprintf(fichier, "%s\n", received_text);
+//                            fclose(fichier);
+//                        }
                         chat_completion(received_text, "http://chatgpt.free-solutions.ch:5006/api/tts", "female-en-5%0A", "fr-fr");
                         should_reconnect = 1;
                     }
@@ -268,7 +268,7 @@ int main(int argc, char **argv) {
     const char *url = "chatgpt.free-solutions.ch";
     int port = 8081;
 
-    chat[chat_size++] = strdup("Bonjour, Assistant.");
+    chat[chat_size++] = strdup("Bonjour, Cyborgue.");
     chat[chat_size++] = strdup("Bonjour. Comment puis je vous aider aujourd'hui?");
 
     lws_set_log_level(LLL_ERR , NULL);
