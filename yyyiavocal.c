@@ -190,7 +190,9 @@ static int callback(struct lws *wsi, enum lws_callback_reasons reason, void *use
             global_wsi = wsi;
             n = sprintf((char *)p, "%s", CONFIG_JSON);
             if (lws_write(wsi, p, n, LWS_WRITE_TEXT) < 0) return -1;
+	    if (audio_file == NULL) {
             audio_file = popen("ffmpeg -f alsa -i default -ar 192000 -ac 1 -acodec pcm_s16le -hide_banner -loglevel quiet -nostats -f wav -", "r");
+	    }
             if (!audio_file) return -1;
             lws_callback_on_writable(wsi);
             break;
