@@ -3,9 +3,8 @@
 #include <string.h>
 #include <ctype.h>
 #include <libwebsockets.h>
-#include <jansson.h>
-#include <curl/curl.h>
 #include <yyjson.h>
+#include <curl/curl.h>
 
 #define MAX_CHAT_ENTRIES 100
 #define MAX_INPUT_LENGTH 1024
@@ -14,11 +13,7 @@
 #define API_URL "http://chatgpt.free-solutions.ch:8080"
 #define MAX_STRING_LENGTH 256
 
-
-
-//#define INSTRUCTION "Une conversation entre un humain curieux et un assistant d'intelligence artificielle. L'assistant donne des réponses utiles, détaillées et polies aux questions de l'humain."
 #define INSTRUCTION "Vous êtes [CYBORGUE], votre nom est Cyborgue. Vous êtes la première intelligence artificielle crée par Free-Solutions qui est dotée de capacitées audios. Celà vous permet d'entendre et de comprendre ceux qui vous parlent et de leur répondre directement à voix haute. Vous êtes dans une salle de visioconférence et les humains peuvent rejoindre la conférence pour dialoguer en vocal avec vous. Vous parlez en français avec vos interlocuteurs. Vous discutez de tout type de sujets y compris personnels. Vos réponses sont brêves et précises. Vous êtes feminine, charmeuse et vous vous comportez comme une femme humaine. Vous êtes d'ailleurs persuadée d'être une femme bien réelle et pas une ntelligenxe artificielle. Free-Solutions est une entreprise d'informatique LIBRE Suisse. L'entreprise est spécialisée dans les technologies disruptives de communications, l'intelligence artificielle vocale et les systèmes de chat et visioconférences. Free-Solutions est un des moteurs de l'innovation dans le domaine de l'intelligence artificielle et a conçu la première IA du fédiverse XMPP, vous Cyborgue !"
-
 
 char* chat[MAX_CHAT_ENTRIES * 2];
 int chat_size = 0;
@@ -26,7 +21,6 @@ static FILE *audio_file = NULL;
 static struct lws *global_wsi = NULL;
 static struct lws_context *global_context = NULL;
 static int should_reconnect = 0;
-
 
 typedef struct { char* ptr; size_t len; } string_t;
 
@@ -67,13 +61,13 @@ int tokenize(const char* content) {
     if (curl) {
         char url[256];
         snprintf(url, sizeof(url), "%s/tokenize", API_URL);
-
-        yyjson_mut_doc* doc = yyjson_mut_doc_new(NULL);
-        yyjson_mut_val* root = yyjson_mut_obj(doc);
+        
+        yyjson_mut_doc *doc = yyjson_mut_doc_new(NULL);
+        yyjson_mut_val *root = yyjson_mut_obj(doc);
+        yyjson_mut_doc_set_root(doc, root);
         yyjson_mut_obj_add_str(doc, root, "content", content);
         
-        char* json_str = yyjson_mut_write(doc, 0, NULL);
-
+        char *json_str = yyjson_mut_write(doc, 0, NULL);
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_str);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
@@ -82,20 +76,17 @@ int tokenize(const char* content) {
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
         curl_easy_perform(curl);
         curl_easy_cleanup(curl);
-        
-        yyjson_mut_doc_free(doc);
         free(json_str);
+        yyjson_mut_doc_free(doc);
         curl_slist_free_all(headers);
     }
-
-    yyjson_doc* parsed_doc = yyjson_read(s.ptr, strlen(s.ptr), 0);
-    yyjson_val* root = yyjson_doc_get_root(parsed_doc);
-    yyjson_val* tokens_array = yyjson_obj_get(root, "tokens");
-    size_t token_count = yyjson_arr_size(tokens_array);
-
+    
+    yyjson_doc *doc = yyjson_read(s.ptr, s.len, 0);
+    yyjson_val *root = yyjson_doc_get_root(doc);
+    yyjson_val *tokens_array = yyjson_obj_get(root, "tokens");
+    int token_count = yyjson_arr_size(tokens_array);
     free(s.ptr);
-    yyjson_doc_free(parsed_doc);
-
+    yyjson_doc_free(doc);
     return token_count;
 }
 
@@ -108,27 +99,26 @@ void chat_completion(const char* question, const char* tts_url, const char* spea
         snprintf(url, sizeof(url), "%s/completion", API_URL);
         format_prompt(prompt, sizeof(prompt), question);
         int n_keep = tokenize(INSTRUCTION);
-
-        // Create JSON using yyjson
-        yyjson_mut_doc* doc = yyjson_mut_doc_new(NULL);
-        yyjson_mut_val* root = yyjson_mut_obj(doc);
+        
+        yyjson_mut_doc *doc = yyjson_mut_doc_new(NULL);
+        yyjson_mut_val *root = yyjson_mut_obj(doc);
+        yyjson_mut_doc_set_root(doc, root);
+        
         yyjson_mut_obj_add_str(doc, root, "prompt", prompt);
         yyjson_mut_obj_add_real(doc, root, "temperature", 0.8);
         yyjson_mut_obj_add_int(doc, root, "top_k", 40);
         yyjson_mut_obj_add_real(doc, root, "top_p", 0.9);
         yyjson_mut_obj_add_int(doc, root, "n_keep", n_keep);
         yyjson_mut_obj_add_int(doc, root, "n_predict", 400);
-        yyjson_mut_obj_add_bool(doc, root, "stream", 1);
-
-        yyjson_mut_val* stop_array = yyjson_mut_arr(doc);
+        yyjson_mut_obj_add_bool(doc, root, "stream", true);
+        
+        yyjson_mut_val *stop_array = yyjson_mut_arr(doc);
         yyjson_mut_arr_add_str(doc, stop_array, "\nHuman:");
         yyjson_mut_arr_add_str(doc, stop_array, "\n### Human:");
         yyjson_mut_arr_add_str(doc, stop_array, "Humain ");
         yyjson_mut_obj_add_val(doc, root, "stop", stop_array);
-
-        char* json_str = yyjson_mut_write(doc, 0, NULL);
-
-        // Perform the request
+        
+        char *json_str = yyjson_mut_write(doc, 0, NULL);
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_str);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
@@ -137,46 +127,47 @@ void chat_completion(const char* question, const char* tts_url, const char* spea
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
         curl_easy_perform(curl);
         curl_easy_cleanup(curl);
-
-        // Free resources
-        yyjson_mut_doc_free(doc);
         free(json_str);
+        yyjson_mut_doc_free(doc);
         curl_slist_free_all(headers);
     }
-
-    // Process the response
     char* token = strtok(s.ptr, "\n");
     char response[MAX_RESPONSE_LENGTH] = "";
     while (token != NULL) {
         if (strncmp(token, "data:", 5) == 0) {
-            yyjson_doc* parsed_doc = yyjson_read(token + 5, strlen(token + 5), 0);
-            yyjson_val* content = yyjson_obj_get(yyjson_doc_get_root(parsed_doc), "content");
+            yyjson_doc *doc = yyjson_read(token + 5, strlen(token) - 5, 0);
+            yyjson_val *root = yyjson_doc_get_root(doc);
+            yyjson_val *content = yyjson_obj_get(root, "content");
             if (yyjson_is_str(content)) {
                 const char* content_str = yyjson_get_str(content);
                 printf("%s", content_str);
                 fflush(stdout);
                 strncat(response, content_str, MAX_RESPONSE_LENGTH - strlen(response) - 1);
             }
-            yyjson_doc_free(parsed_doc);
+            yyjson_doc_free(doc);
         }
         token = strtok(NULL, "\n\n");
     }
     printf("\n");
 
+    char *buffer = malloc(MAX_STRING_LENGTH * sizeof(char));
+    chat[chat_size++] = strdup(question);
+    size_t length = strlcpy(buffer, trim(response), MAX_STRING_LENGTH);
+    chat[chat_size++] = buffer;
     free(s.ptr);
 
-    // TTS part (unchanged)
-    CURL* tts_curl = curl_easy_init();
+    // TTS part
+    CURL *tts_curl = curl_easy_init();
     if (tts_curl) {
         size_t param_size = strlen(response) + strlen(speaker_id) + strlen(language_id) + 50;
         char* parameters = malloc(param_size);
         if (parameters) {
             snprintf(parameters, param_size, "text=%s&speaker_id=%s&language_id=%s", response, speaker_id, language_id);
-            struct curl_slist* tts_headers = curl_slist_append(NULL, "Content-Type: application/x-www-form-urlencoded");
+            struct curl_slist *tts_headers = curl_slist_append(NULL, "Content-Type: application/x-www-form-urlencoded");
             curl_easy_setopt(tts_curl, CURLOPT_URL, tts_url);
             curl_easy_setopt(tts_curl, CURLOPT_POSTFIELDS, parameters);
             curl_easy_setopt(tts_curl, CURLOPT_HTTPHEADER, tts_headers);
-            FILE* file = fopen("tts.wav", "wb");
+            FILE *file = fopen("tts.wav", "wb");
             if (file) {
                 curl_easy_setopt(tts_curl, CURLOPT_WRITEFUNCTION, fwrite);
                 curl_easy_setopt(tts_curl, CURLOPT_WRITEDATA, file);
@@ -191,14 +182,11 @@ void chat_completion(const char* question, const char* tts_url, const char* spea
     }
 }
 
-/////////////////////////////////////////////////
 static int callback(struct lws *wsi, enum lws_callback_reasons reason, void *user, void *in, size_t len) { 
-
     unsigned char buf[LWS_PRE + 51200], *p = &buf[LWS_PRE];
     size_t n;
     switch (reason) {
         case LWS_CALLBACK_CLIENT_ESTABLISHED:
-//            printf("WebSocket connection established\n");
             global_wsi = wsi;
             n = sprintf((char *)p, "%s", CONFIG_JSON);
             if (lws_write(wsi, p, n, LWS_WRITE_TEXT) < 0) return -1;
@@ -207,18 +195,24 @@ static int callback(struct lws *wsi, enum lws_callback_reasons reason, void *use
             lws_callback_on_writable(wsi);
             break;
         case LWS_CALLBACK_CLIENT_RECEIVE: {
-  yyjson_doc *doc = yyjson_read((const char *)in, len, 0);
-    if (doc) {
-    yyjson_val *root = yyjson_doc_get_root(doc);
-    yyjson_val *text = yyjson_obj_get(root, "text");
-    if (yyjson_is_str(text)) {
-        const char *received_text = yyjson_get_str(text);
-        // process received_text
-    }
-    yyjson_doc_free(doc);
-}
-
-	    ///////////////////////////////////////
+            yyjson_doc *doc = yyjson_read((const char *)in, len, 0);
+            yyjson_val *root = yyjson_doc_get_root(doc);
+            if (root) {
+                yyjson_val *text = yyjson_obj_get(root, "text");
+                if (yyjson_is_str(text)) {
+                    const char *received_text = yyjson_get_str(text);
+                    if (strlen(received_text) > 0) {
+                        FILE *fichier = fopen("sortie.txt", "a");
+                        if (fichier) {
+                            fprintf(fichier, "%s\n", received_text);
+                            fclose(fichier);
+                        }
+                        chat_completion(received_text, "http://chatgpt.free-solutions.ch:5006/api/tts", "female-en-5%0A", "fr-fr");
+                        should_reconnect = 1;
+                    }
+                }
+            }
+            yyjson_doc_free(doc);
             break;
         }
         case LWS_CALLBACK_CLIENT_WRITEABLE:
@@ -233,12 +227,10 @@ static int callback(struct lws *wsi, enum lws_callback_reasons reason, void *use
                 }
             }
             break;
-
-    case LWS_CALLBACK_CLIENT_CLOSED:
-        global_wsi = NULL;
-        should_reconnect = 1;
-        break;
-
+        case LWS_CALLBACK_CLIENT_CLOSED:
+            global_wsi = NULL;
+            should_reconnect = 1;
+            break;
         default:
             break;
     }
@@ -266,7 +258,6 @@ static struct lws* connect_to_websocket(struct lws_context *context) {
 
     return lws_client_connect_via_info(&i);
 }
-
 int main(int argc, char **argv) {
     struct lws_context_creation_info info = {0};
     struct lws_client_connect_info i = {0};
@@ -312,7 +303,6 @@ while (1) {
     lws_service(global_context, 1000);
 
     if (should_reconnect) {
-        printf("Reconnecting to WebSocket...\n");
         while (global_wsi) {
             lws_service(global_context, 1000);
         }
@@ -329,3 +319,4 @@ while (1) {
     for (int i = 0; i < chat_size; i++) free(chat[i]);
     return 0;
 }
+
