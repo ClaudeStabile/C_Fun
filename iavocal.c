@@ -11,12 +11,17 @@
 #define MAX_RESPONSE_LENGTH 4096
 #define CONFIG_JSON "{\"config\": {\"sample_rate\":192000}}"
 #define API_URL "http://chatgpt.free-solutions.ch:8080"
-#define INSTRUCTION "Une conversation entre un humain curieux et un assistant d'intelligence artificielle. L'assistant donne des réponses utiles, détaillées et polies aux questions de l'humain."
+//#define INSTRUCTION "Une conversation entre un humain curieux et un assistant d'intelligence artificielle. L'assistant donne des réponses utiles, détaillées et polies aux questions de l'humain."
+#define INSTRUCTION "Vous êtes [CYBORGUE], votre nom est Cyborgue. Vous êtes la première intelligence artificielle crée par Free-Solutions qui est dotée de capacitées audios. Celà vous permet d'entendre et de comprendre ceux qui vous parlent et de leur répondre directement à voix haute. Vous êtes dans une salle de visioconférence et les humains peuvent rejoindre la conférence pour dialoguer en vocal avec vous. Vous parlez en français avec vos interlocuteurs. Vous discutez de tout type de sujets y compris personnels. Vos réponses sont brêves et précises. Vous êtes feminine, charmeuse et vous vous comportez comme une femme humaine. Vous êtes d'ailleurs persuadée d'être une femme bien réelle et pas une ntelligenxe artificielle. Free-Solutions est une entreprise d'informatique LIBRE Suisse. L'entreprise est spécialisée dans les technologies disruptives de communications, l'intelligence artificielle vocale et les systèmes de chat et visioconférences. Free-Solutions est un des moteurs de l'innovation dans le domaine de l'intelligence artificielle et a conçu la première IA du fédiverse XMPP, vous Cyborgue !"
+
 
 char* chat[MAX_CHAT_ENTRIES * 2];
 int chat_size = 0;
 static FILE *audio_file = NULL;
 static struct lws *global_wsi = NULL;
+static struct lws_context *global_context = NULL;
+static int should_reconnect = 0;
+
 
 typedef struct { char* ptr; size_t len; } string_t;
 
@@ -189,6 +194,7 @@ static int callback(struct lws *wsi, enum lws_callback_reasons reason, void *use
                             fclose(fichier);
                         }
                         chat_completion(received_text, "http://chatgpt.free-solutions.ch:5006/api/tts", "female-en-5%0A", "fr-fr");
+			 should_reconnect = 1;
                     }
                 }
                 json_decref(root);
@@ -207,6 +213,10 @@ static int callback(struct lws *wsi, enum lws_callback_reasons reason, void *use
                 }
             }
             break;
+	            case LWS_CALLBACK_CLIENT_CLOSED:
+            global_wsi = NULL;
+            break;
+
         default:
             break;
     }
@@ -217,6 +227,23 @@ static struct lws_protocols protocols[] = {
     { "my-protocol", callback, 0, 51200, },
     { NULL, NULL, 0, 0 }
 };
+
+static struct lws* connect_to_websocket(struct lws_context *context) {
+    struct lws_client_connect_info i = {0};
+    const char *url = "chatgpt.free-solutions.ch";
+    int port = 8081;
+
+    i.context = context;
+    i.address = url;
+    i.port = port;
+    i.path = "/streaming";
+    i.host = i.address;
+    i.origin = i.address;
+    i.ssl_connection = 0;
+    i.protocol = protocols[0].name;
+
+    return lws_client_connect_via_info(&i);
+}
 
 int main(int argc, char **argv) {
     struct lws_context_creation_info info = {0};
@@ -232,7 +259,6 @@ int main(int argc, char **argv) {
     info.protocols = protocols;
     info.gid = -1;
     info.uid = -1;
-
     struct lws_context *context = lws_create_context(&info);
     if (!context) return -1;
 
@@ -249,8 +275,33 @@ int main(int argc, char **argv) {
         lws_context_destroy(context);
         return -1;
     }
+        global_context = lws_create_context(&info);
+    if (!global_context) return -1;
 
-    while (lws_service(context, 1000) >= 0);
+
+        struct lws *wsi = connect_to_websocket(global_context);
+    if (!wsi) {
+        lws_context_destroy(global_context);
+        return -1;
+    }
+
+//    while (lws_service(context, 1000) >= 0);
+   while (1) {
+	           lws_service(global_context, 1000);
+		           if (should_reconnect) {
+//            printf("Reconnecting to WebSocket...\n");
+            lws_cancel_service(global_context);
+            while (global_wsi) {
+                lws_service(global_context, 1000);
+            }
+            wsi = connect_to_websocket(global_context);
+            if (!wsi) {
+                fprintf(stderr, "Failed to reconnect to WebSocket\n");
+                break;
+            }
+            should_reconnect = 0;
+        }
+   }
 
     lws_context_destroy(context);
     for (int i = 0; i < chat_size; i++) free(chat[i]);
