@@ -105,7 +105,7 @@ void chat_completion(const char* question, const char* tts_url, const char* spea
         yyjson_mut_doc_set_root(doc, root);
         
         yyjson_mut_obj_add_str(doc, root, "prompt", prompt);
-        yyjson_mut_obj_add_real(doc, root, "temperature", 0.8);
+        yyjson_mut_obj_add_real(doc, root, "temperature", 0.95);
         yyjson_mut_obj_add_int(doc, root, "top_k", 40);
         yyjson_mut_obj_add_real(doc, root, "top_p", 0.9);
         yyjson_mut_obj_add_int(doc, root, "n_keep", n_keep);
@@ -269,7 +269,7 @@ int main(int argc, char **argv) {
     int port = 8081;
 
     chat[chat_size++] = strdup("Bonjour, Cyborgue.");
-    chat[chat_size++] = strdup("Bonjour. Comment puis je vous aider aujourd'hui?");
+    chat[chat_size++] = strdup(" ");
 
     lws_set_log_level(LLL_ERR , NULL);
     info.port = CONTEXT_PORT_NO_LISTEN;
