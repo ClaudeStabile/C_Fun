@@ -5,13 +5,7 @@
 #include <libwebsockets.h>
 #include <yyjson.h>
 #include <curl/curl.h>
-
-//#define MAX_CHAT_ENTRIES 100
-//#define MAX_INPUT_LENGTH 1024
-//#define MAX_RESPONSE_LENGTH 4096
-//#define CONFIG_JSON "{\"config\": {\"sample_rate\":192000}}"
-//#define API_URL "http://chatgpt.free-solutions.ch:8080"
-//#define MAX_STRING_LENGTH 256
+#include <regex.h>
 
 #define MAX_CHAT_ENTRIES 100
 #define MAX_INPUT_LENGTH 1024
@@ -21,8 +15,12 @@
 #define MAX_STRING_LENGTH 400 
 
 
-//#define INSTRUCTION "Vous êtes [CYBORGUE], votre nom est Cyborgue. Vous êtes la première intelligence artificielle crée par Free-Solutions qui est dotée de capacitées audios. Celà vous permet d'entendre et de comprendre ceux qui vous parlent et de leur répondre directement à voix haute. Vous êtes dans une salle de visioconférence et les humains peuvent rejoindre la conférence pour dialoguer en vocal avec vous. Vous parlez en français avec vos interlocuteurs. Vous discutez de tout type de sujets y compris personnels. Vos réponses sont brêves et précises. Vous êtes feminine, charmeuse et vous vous comportez comme une femme humaine. Vous êtes d'ailleurs persuadée d'être une femme bien réelle et pas une ntelligenxe artificielle. Free-Solutions est une entreprise d'informatique LIBRE Suisse. L'entreprise est spécialisée dans les technologies disruptives de communications, l'intelligence artificielle vocale et les systèmes de chat et visioconférences. Free-Solutions est un des moteurs de l'innovation dans le domaine de l'intelligence artificielle et a conçu la première IA du fédiverse XMPP, vous Cyborgue !"
-#define INSTRUCTION "Vous êtes [CYBORGUE], votre nom est Cyborgue. Vous êtes la première intelligence artificielle crée par Free-Solutions qui est dotée de capacitées audios. Celà vous permet d'entendre et de comprendre ceux qui vous parlent et de leur répondre directement à voix haute. Vous êtes dans une salle de visioconférence et les humains peuvent rejoindre la conférence pour dialoguer en vocal avec vous. Vous parlez en français avec vos interlocuteurs. Vous discutez de tout type de sujets y compris personnels. Vous êtes feminine, charmeuse et vous vous comportez comme une femme humaine. Vous êtes d'ailleurs persuadée d'être une femme bien réelle et pas une intelligenxe artificielle. Vous répondez aux questions qu'on vous pose. Free-Solutions est une entreprise d'informatique LIBRE Suisse. L'entreprise est spécialisée dans les technologies disruptives de communications, l'intelligence artificielle vocale et les systèmes de chat et visioconférences. Free-Solutions est un des moteurs de l'innovation dans le domaine de l'intelligence artificielle et a conçu la première IA du fédiverse XMPP, vous Cyborgue ! Vous travaillez d'ailleurs pour Free-Solutions pour promouvoir les solutions informatiques de l'entreprise telles que Jitsi, Cryptpad et Openfire."
+//#define INSTRUCTION "Vous êtes Cyborgue une intelligence artificielle vous êtes connectée en permnence sur internet avec le logiciel linux lynx. Pour accèder à un site internet, vous devez dire le mot clé INTERNET ou internet suivi de l'URL."
+
+//#define INSTRUCTION "You are Cyborgue, an AI agent with the ability to access the internet. You can use the internet to search for information, validate facts, and provide up-to-date responses. To access the internet, use the keyword INTERNET followed by the URL you need to visit. Follow these guidelines: Example: INTERNET https://www.free-solutions.ch"
+//#define INSTRUCTION "You are Cyborgue, an AI agent with the ability to access the internet. You can use the internet to search for information, validate facts, and provide up-to-date responses. To access the internet, use the keyword INTERNET followed by the URL you need to visit. Follow these guidelines: Example: INTERNET https://www.free-solutions.ch"
+#define INSTRUCTION "Vous êtes Cyborgue, un agent d'intelligence artificielle ayant accès à Internet. Vous pouvez utiliser Internet pour rechercher des informations, valider des faits et fournir des réponses à jour. Pour accéder à Internet, utilisez le mot-clé INTERNET suivi de l'URL que vous devez visiter. Par exemple : INTERNET https://www.free-solutions.ch . Vous êtes connecté avec un navigateur web dès que vous utilisez le mot clé internet suivi d'une URL sui doit commencer par htt"
+
 
 char* chat[MAX_CHAT_ENTRIES * 2];
 int chat_size = 0;
@@ -98,7 +96,36 @@ int tokenize(const char* content) {
     yyjson_doc_free(doc);
     return token_count;
 }
+// Function to escape special characters in the search terms
+char* escape_search_terms(const char* input) {
+    size_t input_len = strlen(input);
+    char* escaped = malloc(input_len * 2 + 1); // Worst case: every character needs escaping
+    if (!escaped) return NULL;
 
+    size_t j = 0;
+    for (size_t i = 0; i < input_len; i++) {
+        if (strchr("\"'\\", input[i])) {
+            escaped[j++] = '\\';
+        }
+        escaped[j++] = input[i];
+    }
+    escaped[j] = '\0';
+    return escaped;
+}
+
+// Function to validate URL using a simplified approach
+int is_valid_url(const char* url) {
+    // Check if the URL starts with http:// or https://
+    if (strncmp(url, "http://", 7) != 0 && strncmp(url, "https://", 8) != 0) {
+        return 0;
+    }
+
+    // Check if there's at least one dot after the protocol
+    const char* dot = strchr(url + 8, '.');
+    return dot != NULL;
+}
+
+/////////////////////////////////////////////////////////////
 void chat_completion(const char* question, const char* tts_url, const char* speaker_id, const char* language_id) {
     CURL* curl = curl_easy_init();
     string_t s;
@@ -158,7 +185,60 @@ void chat_completion(const char* question, const char* tts_url, const char* spea
         token = strtok(NULL, "\n\n");
     }
     printf("\n");
+        // Convert response to lowercase for case-insensitive search
+    char response_lower[MAX_RESPONSE_LENGTH];
+    strncpy(response_lower, response, MAX_RESPONSE_LENGTH);
+    response_lower[MAX_RESPONSE_LENGTH - 1] = '\0';
+    for (int i = 0; response_lower[i]; i++) {
+        response_lower[i] = tolower(response_lower[i]);
+    }
 
+    // Parse for 'internet' (case-insensitive) and launch lynx if a valid URL is found
+    char *internet_tag = strstr(response_lower, "internet");
+    if (internet_tag != NULL) {
+        // Calculate the offset in the original response
+        int offset = internet_tag - response_lower;
+        char *url_start = response + offset + 8; // Move past "internet"
+        while (*url_start == ' ') url_start++; // Skip leading spaces
+
+        // Find the end of the URL (first space or end of string)
+        char *url_end = url_start;
+        while (*url_end && *url_end != ' ' && *url_end != '\n') url_end++;
+
+        // Extract the URL
+        char url[MAX_RESPONSE_LENGTH];
+        size_t url_length = url_end - url_start;
+        if (url_length >= MAX_RESPONSE_LENGTH) url_length = MAX_RESPONSE_LENGTH - 1;
+        strncpy(url, url_start, url_length);
+        url[url_length] = '\0';
+	printf("Extracted URL: %s\n", url); // Debug print
+
+        // Validate the URL
+        if (is_valid_url(url)) {
+            char lynx_command[MAX_RESPONSE_LENGTH + 50]; // Extra space for "lynx ", options, and null terminator
+            //snprintf(lynx_command, sizeof(lynx_command), "lynx -dump -nolist '%s' > /tmp/lynx_output.txt &", url);
+            //snprintf(lynx_command, sizeof(lynx_command), "lynx -accept_all_cookies -dump -nolist '%s' &", url);
+            snprintf(lynx_command, sizeof(lynx_command), "falkon -c '%s' &", url);
+
+            printf("Accessing internet with URL: %s\n", url);
+            printf("Executing command: %s\n", lynx_command); // Debug line to print the exact command
+            fflush(stdout);
+
+            int result = system(lynx_command);
+            if (result == 0) {
+                printf("Internet access initiated successfully in the background.\n");
+                printf("Output will be saved to /tmp/lynx_output.txt\n");
+            } else {
+                printf("Error initiating internet access. Error code: %d\n", result);
+            }
+            fflush(stdout);
+        } else {
+            printf("Invalid URL found after 'internet' keyword: %s\n", url);
+            printf("Skipping internet access.\n");
+        }
+    }
+
+    //////////////////////////////////
     char *buffer = malloc(MAX_STRING_LENGTH * sizeof(char));
     chat[chat_size++] = strdup(question);
     size_t length = strlcpy(buffer, trim(response), MAX_STRING_LENGTH);
@@ -213,11 +293,6 @@ static int callback(struct lws *wsi, enum lws_callback_reasons reason, void *use
                 if (yyjson_is_str(text)) {
                     const char *received_text = yyjson_get_str(text);
                     if (strlen(received_text) > 0) {
-//                        FILE *fichier = fopen("sortie.txt", "a");
-//                        if (fichier) {
-//                            fprintf(fichier, "%s\n", received_text);
-//                            fclose(fichier);
-//                        }
                         chat_completion(received_text, "http://chatgpt.free-solutions.ch:5006/api/tts", "female-en-5%0A", "fr-fr");
                         should_reconnect = 1;
                     }
